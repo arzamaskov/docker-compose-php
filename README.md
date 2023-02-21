@@ -1,4 +1,4 @@
-# A local development environment for PHP using Docker Compose
+# Local environment for PHP developer built with Docker Compose
 
 To use the *PHP CS Fixer* in a container, run the command:
 
