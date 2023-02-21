@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+
+  nginx:
+    image: nginx:alpine
+    working_dir: /etc/nginx
+    volumes:
+    - ./${PROJECT_NAME-./app}:/app
+    - ./config/xhprof:/xhprof
+    - ./config/nginx:/etc/nginx/conf.d
+    - ./config/ssl:/etc/nginx/ssl
+    - ./logs/nginx:/var/log/nginx
+    ports:
+      - "${HOST_MACHINE_UNSECURE_HOST_PORT}:80"
+      - "${HOST_MACHINE_SECURE_HOST_PORT}:443"
+    restart: always
+    links:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: "./images/${PHPVERSION}"
+    container_name: "${PROJECT_NAME}-${PHPVERSION}-fpm"
+    working_dir: /app
+    volumes:
+    - ./${PROJECT_NAME-./app}:/app
+    - ./config/xhprof:/xhprof
+    - ./config/php/php.ini:/usr/local/etc/php/conf.d/00-php.ini
+    - ./config/ssl:/etc/ssl/certs/local
+    links:
+      - database
+
+  database:
+    build:
+      context: "./images/${DATABASE}"
+    container_name: "${PROJECT_NAME}-${DATABASE}"
+    restart: "always"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      HOST_MACHINE_MYSQL_PORT: ${HOST_MACHINE_MYSQL_PORT}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+    ports:
+      - "127.0.0.1:${HOST_MACHINE_MYSQL_PORT}:3306"
+
+  adminer:
+    image: adminer:fastcgi
+    environment:
+      ADMINER_DEFAULT_SERVER: database
+    links:
+      - database
+
+  mail:
+    image: mailhog/mailhog
+    tty: true
+    ports:
+      - '8025:8025'
+
+  redis:
+    container_name: "${PROJECT_NAME}-redis"
+    image: redis:latest
+    ports:
+      - "127.0.0.1:${HOST_MACHINE_REDIS_PORT}:6379"
