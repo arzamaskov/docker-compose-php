@@ -1,4 +1,12 @@
-# Local environment for PHP developer built with Docker Compose
+# Local environment for PHP developers built with Docker Compose
+
+This stack consists of the following:
+
+- PHP
+- nginx
+- mysql
+- adminer
+- Redis
 
 To use the *PHP CS Fixer* in a container, run the command:
 
