@@ -8,8 +8,6 @@ This stack consists of the following:
 - Adminer
 - Redis
 
-To use the *PHP CS Fixer* in a container, run the command:
-
 There are currently several different versions of PHP and MySQL. Use the appropriate versions as needed:
 
 - PHP 7.1
@@ -17,6 +15,10 @@ There are currently several different versions of PHP and MySQL. Use the appropr
 
 - MySQL 5.6
 - MySQL 8
+
+---
+
+To use the *PHP CS Fixer* in a container, run the command:
 
 ```sh
 docker-compose run --rm php-fpm bash -c "php-cs-fixer fix /path/to/fix"
