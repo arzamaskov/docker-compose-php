@@ -1,0 +1,7 @@
+map $host $ssl_cert {
+  default "$SSL_CERT";
+}
+
+map $host $ssl_key {
+  default "$SSL_KEY";
+}
