@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Enable strict error handling,
+set -euo pipefail
+
+host=database
+user=root
+password=root
+
+# Prompt the user for the project name
+read -p "Enter project name: " project
+if [ -z "$project" ]; then
+  echo "Missing project name" >&2
+  exit 1
+fi
+
+mkdir -p "$project"
+
+# Generate SSL certificates
+mkcert "$project.dev" "*.$project.dev"
+mv "$project.dev+1-key.pem" ./config/ssl/"$project.key"
+mv "$project.dev+1.pem" ./config/ssl/"$project.crt"
+
+# Update .env file with project name and MySQL database
+sed -i "s/^PROJECT_NAME=.*/PROJECT_NAME=$project/" .env
+sed -i "s/^MYSQL_DATABASE=.*/MYSQL_DATABASE=$project/" .env
+chmod 0755 ./config/ssl/
+chmod -R 0644 ./config/ssl/*
+
+# Create MySQL database
+cmd="mysql -h$host -u$user -p$password -e 'CREATE DATABASE $project character set utf8;'"
+docker-compose run --rm php-fpm bash -c "$cmd"
+
+# Add project to /etc/hosts
+# echo "127.0.0.1 $project.dev" | sudo tee -a /etc/hosts
+sudo tee -a test <<< "127.0.0.1 $project.dev"
+
+echo "$project created"
+
