@@ -62,3 +62,10 @@ RUN apt-get -y update && \
 RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
 RUN chmod a+x php-cs-fixer
 RUN mv php-cs-fixer /usr/local/bin/php-cs-fixer
+
+# PHP_CodeSniffer
+RUN curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar -o phpcs
+RUN curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar -o phpcbf
+RUN chmod a+x phpcs phpcbf
+RUN mv phpcs phpcbf /usr/local/bin/
+
