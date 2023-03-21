@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Load environment variables from .env file
+if [ -f .env ]
+then
+  export $(cat .env | sed 's/#.*//g' | xargs)
+fi
+
+# Navigate to backups directory
+cd "$BACKUP_PATH"
+
+# Execute MySQL command with Docker
+docker run --rm -i \
+  -v "$BACKUP_PATH:/backups" \
+  -e MYSQL_HOST="$MYSQL_HOST" \
+  -e MYSQL_USER="$MYSQL_USER" \
+  -e MYSQL_PASSWORD="$MYSQL_PASSWORD" \
+  -e MYSQL_DATABASE="$MYSQL_DATABASE" \
+  mysql:latest sh -c "mysql -h \$MYSQL_HOST -u \$MYSQL_USER -p\$MYSQL_PASSWORD \$MYSQL_DATABASE << 'EOF'
+SET autocommit=0;
+SET unique_checks=0;
+SET foreign_key_checks=0;
+
+SOURCE /backups/$BACKUP_FILENAME;
+COMMIT;
+
+SET unique_checks=1;
+SET foreign_key_checks=1;
+EOF"
+
+# The `.env` file must contains the following environment variables:
+# BACKUP_PATH=/path/to/backups
+# MYSQL_HOST=<hostname>
+# MYSQL_USER=<username>
+# MYSQL_PASSWORD=<password>
+# MYSQL_DATABASE=<database>
+# BACKUP_FILENAME=<filename>
