@@ -24,7 +24,7 @@ services:
   php-fpm:
     build:
       context: "./images/${PHP_VERSION}"
-    container_name: "${PROJECT_NAME}-php${PHPVERSION}"
+    container_name: "${PROJECT_NAME}-php${PHP_VERSION}"
     working_dir: /app
     volumes:
     - ./${PROJECT_NAME-./app}:/app
@@ -36,8 +36,8 @@ services:
 
   db:
     build:
-      context: "./images/${DATABASE}"
-    container_name: "${PROJECT_NAME}-${DATABASE}"
+      context: "./images/${MYSQL_DATABASE}"
+    container_name: "${PROJECT_NAME}-${MYSQL_DATABASE}"
     restart: "always"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
