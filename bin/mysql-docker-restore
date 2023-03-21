@@ -12,13 +12,7 @@ fi
 cd "$BACKUP_PATH"
 
 # Execute MySQL command with Docker
-docker run --rm -i \
-  -v "$BACKUP_PATH:/backups" \
-  -e MYSQL_HOST="$MYSQL_HOST" \
-  -e MYSQL_USER="$MYSQL_USER" \
-  -e MYSQL_PASSWORD="$MYSQL_PASSWORD" \
-  -e MYSQL_DATABASE="$MYSQL_DATABASE" \
-  mysql:latest sh -c "mysql -h \$MYSQL_HOST -u \$MYSQL_USER -p\$MYSQL_PASSWORD \$MYSQL_DATABASE << 'EOF'
+docker-compose run --rm php-fpm bash -c "mysql -h $MYSQL_HOST -u $MYSQL_ROOT_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE << 'EOF'
 SET autocommit=0;
 SET unique_checks=0;
 SET foreign_key_checks=0;
