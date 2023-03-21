@@ -31,6 +31,7 @@ services:
     - ./config/xhprof:/xhprof
     - ./config/php/php.ini:/usr/local/etc/php/conf.d/00-php.ini
     - ./config/ssl:/etc/ssl/certs/local
+    - ./backups:/backups/
     networks:
         - docker
 
