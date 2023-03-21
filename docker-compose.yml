@@ -36,8 +36,8 @@ services:
 
   db:
     build:
-      context: "./images/${MYSQL_DATABASE}"
-    container_name: "${PROJECT_NAME}-${MYSQL_DATABASE}"
+      context: "./images/${MYSQL_VERSION}"
+    container_name: "${PROJECT_NAME}-${MYSQL_VERSION}"
     restart: "always"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
