@@ -5,7 +5,7 @@ $templates_path = __DIR__ . '/assets/templates/';
 $web_server = getenv('SERVER_SOFTWARE');
 $php_version = phpversion();
 
-$link = mysqli_connect('database', 'admin', 'root', null);
+$link = mysqli_connect('db', 'root', 'root', null);
 
 if (mysqli_connect_errno()) {
     $mysql = sprintf(

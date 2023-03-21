@@ -5,7 +5,7 @@ $password = 'root';
 $pdo = null;
 
 try {
-    $database = 'mysql:host=database:3306';
+    $database = 'mysql:host=db:3306';
     $pdo = new PDO($database, $user, $password);
     echo 'Success: A proper connection to MySQL was made! The docker database is great.';
 } catch (PDOException $e) {
