@@ -47,11 +47,6 @@ RUN apk add --no-cache \
 	docker-php-ext-install -j$(nproc) $PHP_MOD_INSTALL && \
 	apk del .build-deps
 
-# COPY --chmod=755 scripts/cscart_install /usr/local/bin/cscart_install
-# COPY --chmod=755 scripts/cscart_addons_install /usr/local/bin/cscart_addons_install
-# COPY --chmod=755 scripts/cscart_perms_fixer /usr/local/bin/cscart_perms_fixer
-# COPY --chmod=755 scripts/wait_for_database /usr/local/bin/wait_for_database
-
 # PHP-CS-Fixer
 RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o php-cs-fixer
 RUN chmod a+x php-cs-fixer
