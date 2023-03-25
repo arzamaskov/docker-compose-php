@@ -47,6 +47,9 @@ RUN apk add --no-cache \
 	docker-php-ext-install -j$(nproc) $PHP_MOD_INSTALL && \
 	apk del .build-deps
 
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # PHP-CS-Fixer
 RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o php-cs-fixer
 RUN chmod a+x php-cs-fixer
